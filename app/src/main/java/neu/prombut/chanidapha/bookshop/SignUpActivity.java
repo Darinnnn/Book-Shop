@@ -43,19 +43,19 @@ public class SignUpActivity extends AppCompatActivity {
         passwordString = passwordEditText.getText().toString().trim();
 
         //Check Space
-        if (nameString.equals("")  || userString.equals("")  || passwordString.equals("")) {
+        if (userString.equals("")  || passwordString.equals("")) {
             //Have Space
             MyAlert myAlert = new MyAlert();
-            myAlert.myDialog(this, "มีช่องว่าง", "กรุณากรอกทุกช่อง คะ");
+            myAlert.myDialog(this, "Have Space", "Please Fill All Blank");
 
         }else {
-            //No Space
-            UploadToServer();
+
+
         }
 
 
 
-    }// clickSign
+    }// clickSignIn
 
     private void UploadToServer() {
 
