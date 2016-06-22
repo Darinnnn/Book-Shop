@@ -77,12 +77,13 @@ public class BookActivity extends AppCompatActivity {
 
                 for (int i=0;i<jsonArray.length();i++){
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    iconString[i] = jsonObject.getString("Cove");
+                    iconString[i] = jsonObject.getString("Cover");
                     iconString[i] = jsonObject.getString("Name");
                     iconString[i] = jsonObject.getString("Price");
 
                 }// for
-                BaseAdapter baseAdapter
+                BaseAdapter baseAdapter = new BookAdapter(BookActivity.this,iconString,nameString,priceString);
+                listView.setAdapter(baseAdapter);
 
 
             } catch (Exception e) {
