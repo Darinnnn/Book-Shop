@@ -17,91 +17,86 @@ import org.json.JSONObject;
 
 public class BookActivity extends AppCompatActivity {
 
+                //Explicit
+                private TextView textView;
+                private ListView listView;
+                private static final String urlJSON = "http://swiftcodingthai.com/neu/get_product.php";
 
-    // Explicit
-    private TextView textView;
-    private ListView listView;
-    private  static final String urlJSON = "http://swiftcodingthai.com/neu/get_product.php";
+    		        @Override
+                    protected void onCreate(Bundle savedInstanceState) {
+                    super.onCreate(savedInstanceState);
+                    setContentView(R.layout.activity_book);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book);
+                    //Bind Widget
+                        textView = (TextView) findViewById(R.id.textView6);
+                        listView = (ListView) findViewById(R.id.listView);
 
+                       //Shot View
+                                String strName = getIntent().getStringExtra("name");
+                                textView.setText(strName);
 
-        // Bind Widget
-        textView = (TextView) findViewById(R.id.textView6);
-        listView = (ListView) findViewById(R.id.listView);
-
-        // Show View
-        String strName = getIntent().getStringExtra("Name");
-        textView.setText(strName);
-
-        // Create ListView
-        createListView();
-
-    } // Main Method
-
-    private class SynProduct extends AsyncTask<Void, Void, String> {
-
-        @Override
-        protected String doInBackground(Void... voids) {
-
-            try {
-                OkHttpClient okHttpClient = new OkHttpClient();
-                Request.Builder builder = new Request.Builder();
-                Request request = builder.url(urlJSON).build();
-                Response response = okHttpClient.newCall(request).execute();
-                return response.body().string();
-
-            } catch (Exception e) {
-                return null;
-            }
+                        //Create listView
+                                createListView();
 
 
-        } // doInback
 
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+                                    }//Main Method
 
-            Log.d("22June", "JSON ==> " + s);
-
-            try {
-
-                JSONArray jsonArray = new JSONArray(s);
-
-                String[] iconString = new String[jsonArray.length()];
-                String[] nameString = new String[jsonArray.length()];
-                String[] priceString = new String[jsonArray.length()];
-
-                for (int i=0;i<jsonArray.length();i++){
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    iconString[i] = jsonObject.getString("Cover");
-                    iconString[i] = jsonObject.getString("Name");
-                    iconString[i] = jsonObject.getString("Price");
-
-                }// for
-                BaseAdapter baseAdapter = new BookAdapter(BookActivity.this,iconString,nameString,priceString);
-                listView.setAdapter(baseAdapter);
+                    private class SynProduct extends AsyncTask<Void, Void, String> {
 
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                            @Override
+                    protected String doInBackground(Void... voids) {
+
+                                    try {
+                                    OkHttpClient okHttpClient = new OkHttpClient();
+                                    Request.Builder builder = new Request.Builder();
+                                    Request request = builder.url(urlJSON).build();
+                                    Response response = okHttpClient.newCall(request).execute();
+                                    return  response.body().string();
+
+                                        } catch (Exception e) {
+                                    return null;
+
+                                        }
+
+                                }//doInBack
 
 
-    }// onPost
+                            @Override
+                    protected void onPostExecute(String s) {
+                            super.onPostExecute(s);
+                                    Log.d("22June","JSON ==> "+s);
+                                    try {
+                                  JSONArray jsonArray = new JSONArray(s);
 
-    } // class
+                                        String[] iconString = new String[jsonArray.length()];
+                                        String[] nameString = new String[jsonArray.length()];
+                                        String[] priceString = new String[jsonArray.length()];
+
+                                   for (int i=0;i<jsonArray.length();i++){
+                                           JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                           iconString[i] = jsonObject.getString("Cover");
+                                           nameString[i] = jsonObject.getString("Name");
+                                           priceString[i] = jsonObject.getString("Price");
+
+                                                }//for
+                                    BaseAdapter baseAdapter = new BookAdapter (BookActivity.this,iconString, nameString, priceString);
+                                    listView.setAdapter(baseAdapter);
+
+                                        }catch (Exception e){
+                                    e.printStackTrace();
+                                    }
 
 
-    private void createListView(){
-
-        SynProduct synProduct = new SynProduct();
-        synProduct.execute();
-
-    }
+                                        }//onPost
+                                    }//class
 
 
-} // Main Class
+                    private void createListView() {
+                        SynProduct synProduct = new SynProduct();
+                        synProduct.execute();
+                            }
+
+                    }//Main Class
+
